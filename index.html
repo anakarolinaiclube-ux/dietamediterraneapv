@@ -1,64 +1,299 @@
-<header class="hero">
-  <div class="wrap hero-grid">
-    <div> <!-- Div de agrupamento do texto para o grid -->
-      <h1>Coma como quem<br>vive numa <em>ilha grega</em></h1>
-      <p class="lead">100 receitas construídas em torno da dieta que os médicos chamam de mais saudável do mundo — os mesmos pilares de azeite, peixe e vegetais que mantêm o litoral mediterrâneo comendo bem depois dos 90 anos.</p>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dieta Mediterrânea — O Livro de Receitas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --aegean:#123B48;
+    --aegean-deep:#0C2A33;
+    --olive:#6E7A3F;
+    --terracotta:#C1622D;
+    --sand:#F3EDE0;
+    --paper:#FBF8F1;
+    --ink:#1D2621;
+    --ink-soft:#4C5850;
+    --line:rgba(18,59,72,0.14);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Work Sans', sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{ font-family:'Fraunces', serif; font-weight:600; line-height:1.08; }
+  .eyebrow{
+    font-family:'Work Sans', sans-serif;
+    font-size:12px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase;
+  }
+  a{ color:inherit; }
+  img{ max-width:100%; display:block; }
 
-      <div class="price-card">
-        <div class="price-row">
-          <span class="price-now">R$2,99</span>
-          <span class="price-was">R$19,95</span>
-        </div>
-        <span class="price-save">Você economiza R$16,96 · 85% off hoje</span>
-        <div class="divider-dash"></div>
-        <div class="eyebrow" style="color:#8A8578; margin-bottom:10px;">O preço volta ao normal em</div>
-        <div class="timer" id="timer">
-          <div class="box"><b id="t-h">23</b><span>Horas</span></div>
-          <div class="colon">:</div>
-          <div class="box"><b id="t-m">59</b><span>Min</span></div>
-          <div class="colon">:</div>
-          <div class="box"><b id="t-s">59</b><span>Seg</span></div>
-        </div>
-        <a class="cta" href="https://ggcheckout.app/checkout/v4/scaJBl3fgyNY5NOE1tFV" style="display:block; text-decoration:none;">Garantir Acesso Agora — R$2,99</a>
-        <div class="microcopy">Acesse em qualquer dispositivo</div>
+  /* ---------- placeholder blocks (remove when real photos are added) ---------- */
+  .img-slot{
+    border:2px dashed rgba(18,59,72,0.35);
+    background:repeating-linear-gradient(135deg, rgba(18,59,72,0.05) 0 10px, rgba(18,59,72,0.02) 10px 20px);
+    border-radius:14px;
+    display:flex; align-items:center; justify-content:center;
+    text-align:center; color:var(--ink-soft);
+    font-size:13px; line-height:1.5; padding:16px;
+  }
+
+  /* ---------- header ---------- */
+  header{
+    display:flex; align-items:center; justify-content:center;
+    padding:28px 24px 8px;
+  }
+  .logo{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Fraunces', serif; font-weight:600; font-size:20px;
+    color:var(--aegean);
+  }
+  .logo svg{ width:22px; height:22px; }
+
+  /* ---------- hero ---------- */
+  .hero{
+    background:var(--aegean);
+    color:var(--paper);
+    padding:56px 24px 72px;
+  }
+  .hero-inner{
+    max-width:1080px; margin:0 auto;
+    display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;
+  }
+  .hero-cover{
+    border-radius:18px; overflow:hidden;
+    box-shadow:0 30px 60px rgba(0,0,0,0.35);
+    transform:rotate(-1.2deg);
+  }
+  .hero-cover img{ width:100%; }
+  .badge-row{ display:flex; align-items:center; gap:8px; margin-bottom:18px; color:#E8B98C;}
+  .badge-row .eyebrow{ color:#E8B98C; }
+  .hero h1{ font-size:40px; color:#fff; margin-bottom:18px; }
+  .price-row{ display:flex; align-items:baseline; gap:12px; margin:18px 0 4px; }
+  .price-now{ font-family:'Fraunces', serif; font-size:40px; font-weight:700; color:var(--terracotta); }
+  .price-was{ font-size:18px; text-decoration:line-through; color:rgba(251,248,241,0.5); }
+  .save-note{ font-size:14px; color:rgba(251,248,241,0.75); margin-bottom:26px; }
+
+  .countdown{ display:flex; gap:14px; margin:20px 0 30px; }
+  .countdown .box{
+    background:rgba(251,248,241,0.08);
+    border:1px solid rgba(251,248,241,0.18);
+    border-radius:10px;
+    padding:12px 16px;
+    min-width:64px; text-align:center;
+  }
+  .countdown .box .num{ font-family:'Fraunces', serif; font-size:26px; font-weight:600; }
+  .countdown .box .label{ font-size:10px; letter-spacing:0.08em; text-transform:uppercase; opacity:0.7; margin-top:2px; }
+
+  .cta-btn{
+    display:inline-block;
+    background:var(--terracotta);
+    color:#fff;
+    font-weight:600; font-size:16px;
+    padding:16px 30px;
+    border-radius:10px;
+    text-decoration:none;
+    box-shadow:0 12px 24px rgba(193,98,45,0.35);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .cta-btn:hover{ transform:translateY(-2px); box-shadow:0 16px 30px rgba(193,98,45,0.45); }
+  .cta-sub{ font-size:12px; color:rgba(251,248,241,0.6); margin-top:10px; }
+
+  /* ---------- section: sobre / features ---------- */
+  section.about{ padding:80px 24px; background:var(--paper); }
+  .about-inner{
+    max-width:1080px; margin:0 auto;
+    display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center;
+  }
+  .about h2{ font-size:32px; color:var(--aegean); margin-bottom:18px; }
+  .about p{ color:var(--ink-soft); font-size:16px; line-height:1.7; margin-bottom:16px; }
+  .features{ list-style:none; margin-top:24px; }
+  .features li{
+    display:flex; gap:12px; align-items:flex-start;
+    font-size:15px; font-weight:500; color:var(--ink);
+    margin-bottom:14px;
+  }
+  .features li::before{
+    content:"◆";
+    color:var(--terracotta);
+    font-size:11px;
+    margin-top:5px;
+  }
+  .about-media .img-slot{ aspect-ratio:4/3; }
+  .video-slot{
+    aspect-ratio:16/10;
+  }
+
+  /* ---------- section: oferta / dark banner ---------- */
+  section.offer{
+    background:var(--aegean-deep);
+    color:var(--paper);
+    padding:80px 24px;
+    position:relative;
+    overflow:hidden;
+  }
+  section.offer::before{
+    content:"";
+    position:absolute; inset:0;
+    background:
+      radial-gradient(circle at 85% 20%, rgba(110,122,63,0.35), transparent 45%),
+      radial-gradient(circle at 10% 85%, rgba(193,98,45,0.25), transparent 40%);
+    pointer-events:none;
+  }
+  .offer-inner{
+    max-width:1080px; margin:0 auto; position:relative;
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:60px; align-items:center;
+  }
+  .offer .eyebrow{ color:#B9C79A; margin-bottom:10px; }
+  .offer h2{ font-size:34px; color:#fff; margin-bottom:14px; }
+  .offer h2 em{ font-style:normal; color:var(--terracotta); }
+  .guarantee{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:13px; color:#DCE6CE;
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.14);
+    border-radius:999px;
+    padding:8px 16px;
+    margin-bottom:22px;
+  }
+  .offer .price-row{ margin-top:4px; }
+  .offer-media .img-slot{
+    aspect-ratio:1/1;
+    border-radius:50%;
+  }
+
+  /* ---------- footer ---------- */
+  footer{
+    padding:36px 24px; text-align:center;
+    color:var(--ink-soft); font-size:12px;
+    background:var(--paper);
+  }
+
+  @media (max-width:860px){
+    .hero-inner, .about-inner, .offer-inner{ grid-template-columns:1fr; }
+    .hero-inner{ display:flex; flex-direction:column-reverse; }
+    .hero h1{ font-size:30px; }
+    .countdown .box{ min-width:52px; padding:10px 12px; }
+    .offer-media{ order:-1; max-width:220px; margin:0 auto; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2c-3 3-3 7 0 10 3-3 3-7 0-10z"/><path d="M12 12v10"/></svg>
+    Dieta Mediterrânea
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="badge-row">
+        <span class="eyebrow">⏱ Oferta por tempo limitado</span>
+      </div>
+      <h1>O Livro de Receitas da Dieta Mediterrânea</h1>
+
+      <div class="countdown" id="countdown">
+        <div class="box"><div class="num" id="cd-h">23</div><div class="label">Horas</div></div>
+        <div class="box"><div class="num" id="cd-m">59</div><div class="label">Min</div></div>
+        <div class="box"><div class="num" id="cd-s">59</div><div class="label">Seg</div></div>
+      </div>
+
+      <div class="price-row">
+        <span class="price-now">R$2,99</span>
+        <span class="price-was">R$19,90</span>
+      </div>
+      <p class="save-note">Você economiza R$16,91 (85% OFF) · Baixe agora e comece a cozinhar hoje</p>
+
+      <a href="https://ggcheckout.app/checkout/v4/scaJBl3fgyNY5NOE1tFV" class="cta-btn">Baixar o Livro Agora</a>
+      <div class="cta-sub">Acesso imediato · Entrega digital por link</div>
+    </div>
+
+    <div class="hero-cover">
+      <img src="D_MEDITERRANEA.png" alt="Capa do livro Dieta Mediterrânea">
+    </div>
+  </div>
+</section>
+
+<!-- ============ SOBRE / FEATURES ============ -->
+<section class="about">
+  <div class="about-inner">
+    <div class="about-media">
+      <!-- vídeo/montagem: substituir por carrossel real de fotos dos pratos -->
+      <div class="img-slot video-slot">
+        ESPAÇO PARA VÍDEO/MONTAGEM<br>
+        (sequência de fotos dos pratos, estilo carrossel — 1200×750px)
       </div>
     </div>
-
-    <div class="platter-wrap">
-      <svg viewBox="0 0 420 420" width="100%" style="max-width:420px;">
-        <circle cx="210" cy="210" r="196" fill="#0D262F" stroke="#2A5C6C" stroke-width="1"/>
-        <circle cx="210" cy="210" r="150" fill="none" stroke="#2A5C6C" stroke-width="1" stroke-dasharray="2 6"/>
-        <!-- Removi o style inline daqui e passei para o CSS acima -->
-        <g class="platter-spin">
-          <g transform="translate(210,52)">
-            <ellipse cx="0" cy="0" rx="24" ry="17" fill="#6E7D4F"/>
-            <ellipse cx="-6" cy="-4" rx="7" ry="4" fill="#8B9A66" opacity="0.7"/>
-          </g>
-          <g transform="translate(347,130)">
-            <circle r="22" fill="#B5562E"/>
-            <path d="M-6,-20 L0,-28 L6,-20" stroke="#6E7D4F" stroke-width="4" fill="none" stroke-linecap="round"/>
-          </g>
-          <g transform="translate(347,290)">
-            <ellipse rx="24" ry="18" fill="#D9A441"/>
-            <ellipse rx="9" ry="6" fill="#F0D98B" opacity="0.6"/>
-          </g>
-          <g transform="translate(210,368)">
-            <ellipse rx="30" ry="14" fill="#1F5C73"/>
-            <path d="M28,0 L44,-12 L44,12 Z" fill="#1F5C73"/>
-            <circle cx="-14" cy="-2" r="2.4" fill="#F5EFE0"/>
-          </g>
-          <g transform="translate(73,290)">
-            <ellipse rx="26" ry="19" fill="#E4C98A"/>
-            <ellipse rx="14" ry="9" fill="#C9A968" opacity="0.5"/>
-          </g>
-          <g transform="translate(73,130)">
-            <path d="M0,16 C0,-4 -14,-10 -18,-24 M0,16 C0,-4 14,-10 18,-24 M0,16 L0,-20" stroke="#6E7D4F" stroke-width="4" fill="none" stroke-linecap="round"/>
-          </g>
-        </g>
-        <circle cx="210" cy="210" r="72" fill="#12333F" stroke="#D9A441" stroke-width="1.4"/>
-        <text x="210" y="203" text-anchor="middle" fill="#D9A441" font-family="Space Grotesk, sans-serif" font-size="11" letter-spacing="2">RECEITAS</text>
-        <text x="210" y="228" text-anchor="middle" fill="#F7F1E4" font-family="Fraunces, serif" font-size="34" font-weight="700">100</text>
-      </svg>
+    <div class="about-text">
+      <h2>Pronta para dominar a dieta mais deliciosa do mundo?</h2>
+      <p>Embarque numa jornada de sabores com o <strong>"Dieta Mediterrânea"</strong>. Explore as tradições vibrantes e saudáveis da região do Mediterrâneo nessa coleção deliciosa de receitas — de saladas coloridas a pratos de peixe suculentos e criações perfumadas com ervas frescas.</p>
+      <p>Com receitas fáceis de seguir e dicas práticas, esse livro torna simples aproveitar refeições saborosas e nutritivas inspiradas no estilo de vida mediterrâneo.</p>
+      <ul class="features">
+        <li>Receitas mediterrâneas saudáveis para o coração, fáceis de fazer</li>
+        <li>Ingredientes frescos e acessíveis, com instruções simples</li>
+        <li>Refeições saborosas que sustentam um estilo de vida saudável</li>
+      </ul>
     </div>
-  </div> <!-- wrap hero-grid -->
-</header>
+  </div>
+</section>
+
+<!-- ============ OFERTA FINAL ============ -->
+<section class="offer">
+  <div class="offer-inner">
+    <div class="offer-text">
+      <div class="eyebrow">Hoje você pode garantir</div>
+      <h2>O Livro de Receitas da <em>Dieta Mediterrânea</em></h2>
+      <div class="guarantee">✓ Garantia de 30 dias — 100% do dinheiro de volta</div>
+      <div class="price-row">
+        <span class="price-now">R$2,99</span>
+        <span class="price-was">R$19,90</span>
+      </div>
+      <br>
+      <a href="https://ggcheckout.app/checkout/v4/scaJBl3fgyNY5NOE1tFV" class="cta-btn">Baixe Agora e Comece a Cozinhar Hoje!</a>
+    </div>
+    <div class="offer-media">
+      <!-- foto circular estilo prato mediterrâneo, montado em mesa -->
+      <div class="img-slot">
+        FOTO CIRCULAR<br>
+        (mesa de pratos mediterrâneos — 900×900px)
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © Dieta Mediterrânea — Produto digital de entrega imediata. Compra segura.
+</footer>
+
+<script>
+  // Contagem regressiva de 24h a partir do carregamento da página
+  const total = 24 * 60 * 60; // segundos
+  let remaining = total;
+  const h = document.getElementById('cd-h');
+  const m = document.getElementById('cd-m');
+  const s = document.getElementById('cd-s');
+  function tick(){
+    if(remaining <= 0){ remaining = total; }
+    const hh = Math.floor(remaining/3600);
+    const mm = Math.floor((remaining%3600)/60);
+    const ss = remaining%60;
+    h.textContent = String(hh).padStart(2,'0');
+    m.textContent = String(mm).padStart(2,'0');
+    s.textContent = String(ss).padStart(2,'0');
+    remaining--;
+  }
+  tick();
+  setInterval(tick, 1000);
+</script>
+
+</body>
+</html>
